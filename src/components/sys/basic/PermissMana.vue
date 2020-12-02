@@ -8,7 +8,13 @@
     <el-button size="small" type="primary" icon="el-icon-plus" @click="doAddRole">添加角色</el-button>
   </div>
   <div class="permissManaMain">
-    <el-collapse v-model="activeName" accordion @change="change">
+    <el-collapse v-model="activeName"
+                 accordion
+                 v-loading="loading"
+                 element-loading-text="加载中..."
+                 element-loading-spinner="el-icon-loading"
+                 element-loading-background="rgba(0, 0, 0, 0.8)"
+                 @change="change">
       <el-collapse-item :title="r.nameZh" :name="r.id" v-for="(r,index) in roles" :key="index">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
@@ -45,6 +51,7 @@ export default {
         name:'',
         nameZh:''
       },
+      loading:false,
       roles:[],
       activeName:-1,
       selectedMenus:[],
@@ -127,7 +134,9 @@ export default {
       })
     },
     initRoles(){
+      this.loading=true;
       this.getRequest("/system/basic/permiss/").then(resp=>{
+        this.loading=false;
         if (resp){
           this.roles=resp;
         }
