@@ -96,6 +96,9 @@ export default {
         let d=deps[i];
         if (d.id == dep.parentId){
           d.children=d.children.concat(dep);
+          if (d.children.length>0){
+            d.isParent=true;
+          }
           return;
         }else {
           this.addDep2Deps(d.children,dep);
@@ -117,14 +120,17 @@ export default {
       this.dep.parentId=data.id;
       this.dialogVisible=true;
     },
-    removeDepFromDeps(deps,id){
+    removeDepFromDeps(p,deps,id){
       for (let i=0;i<deps.length;i++){
         let d=deps[i];
         if (d.id==id){
           deps.splice(i,1);
+          if (deps.length==0){
+            p.isParent=false;
+          }
           return;
         }else {
-          this.removeDepFromDeps(d.children,id);
+          this.removeDepFromDeps(d,d.children,id);
         }
       }
     },
@@ -139,7 +145,7 @@ export default {
         }).then(() => {
           this.deleteRequest("/system/basic/department/"+data.id).then(resp=>{
             if (resp){
-              this.removeDepFromDeps(this.deps,data.id)
+              this.removeDepFromDeps(null,this.deps,data.id)
             }
           })
         }).catch(() => {

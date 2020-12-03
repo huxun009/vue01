@@ -17,7 +17,7 @@
       <el-input size="normal" type="password" v-model="loginForm.password"
                 auto-complete="off" placeholder="请输入密码" @keydown.enter.native="submitLogin"></el-input>
     </el-form-item>
-    <el-checkbox size="normal" class="loginRemeber" v-model="checked"></el-checkbox>
+    <el-checkbox size="normal" class="loginRemeber" v-model="checked">记住密码</el-checkbox>
     <el-button size="normal" type="primary" style="width: 100%" @click="submitLogin">登录</el-button>
   </el-form>
 </div>
